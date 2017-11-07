@@ -3,3 +3,5 @@
 It is C++ header only library containing some useful aliases.
 
 See [nya.hpp](src/nya.hpp) for details.
+
+The library is free to use — either include or just copy the file.
