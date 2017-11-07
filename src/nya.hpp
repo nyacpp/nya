@@ -4,15 +4,17 @@
 // Try to include this file to the last of all includes,
 // because of some necessary #defines.
 
-#include <limits>
-#include <memory>
-
-#define umap std::unordered_map
-#define uset std::unordered_set
+// #include <limits>
 #define qnan std::numeric_limits<double>::quiet_NaN()
 #define infin std::numeric_limits<double>::infinity()
 
-#define all(x) (x).begin(), (x).end()
+// #include <unordered_map>
+#define umap std::unordered_map
+
+// #include <unordered_set>
+#define uset std::unordered_set
+
+// #include <memory>
 #define u_p std::unique_ptr
 #define s_p std::shared_ptr
 #define w_p std::weak_ptr
@@ -20,9 +22,10 @@
 #define dp_cast std::dynamic_pointer_cast
 #define make_p std::make_pair
 #define make_s std::make_shared
-template<typename T, typename ...Args>
-u_p<T> make_u(Args&& ...args) { return u_p<T>(new T(std::forward<Args>(args)...)); }
+#define make_u std::make_unique
 
+// common aliases
+#define all(x) (x).begin(), (x).end()
 
 typedef unsigned char uchar;
 typedef unsigned short ushort;
