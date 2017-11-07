@@ -1,2 +1,3 @@
-# nya
-c++ shortenings like llong, umap, u_p etc.
+# NYA Library
+
+It is C++ header only library containing some useful aliases.
