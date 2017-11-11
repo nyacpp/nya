@@ -25,7 +25,7 @@
 #define make_u std::make_unique
 
 // common aliases
-#define all(x) (x).begin(), (x).end()
+#define all_(x) (x).begin(), (x).end()
 
 typedef unsigned char uchar;
 typedef unsigned short ushort;
