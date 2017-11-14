@@ -5,14 +5,14 @@
 // If you want switch for std::string:
 switch( s )
 {
-	case "one": { std::cout << "!\n"; }
-	case "two": { std::cout << "!!\n"; }
-	case "three": { std::cout << "!!!\n"; }
-	default: { std::cout << "Non-non\n"; }
+	case "one":   { std::cout << "!\n"; break; }
+	case "two":   { std::cout << "!!\n"; break; }
+	case "three": { std::cout << "!!!\n"; break; }
+	default:      { std::cout << "Non-non\n"; }
 }
 
 // Write something like this:
-#include "nya/switch.hpp"
+#include <nya/switch.hpp>
 #include <string>
 #include <unordered_map>
 

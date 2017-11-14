@@ -19,12 +19,24 @@ See [nya.hpp](src/nya.hpp) for details.
 The library is free to use — either fork or just copy the file.
 
 ## Additional C++ fun
-*switch for string (and other types)*
+* *exception with file:line*
 ```c++
-#include "nya/switch.hpp"
-#include <string>
-#include <unordered_map>
+#define throw_nya(message) throw nya::exception(__FILE__, __LINE__, message)
+```
 
+* *io notes*
+```c++
+ios::sync_with_stdio(false);
+cin.tie(0);
+```
+
+* *cozy log*
+```c++
+error_log << "Number %d shouldn't be here"s % 5;
+```
+
+* *switch for string (and other types)*
+```c++
 caseS( "one" )
 {
 	std::cout << "!\n";

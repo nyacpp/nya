@@ -26,6 +26,7 @@
 
 // common aliases
 #define all_(x) (x).begin(), (x).end()
+#define in_(a, x) ((x).find(a) != (x).end())
 
 typedef unsigned char uchar;
 typedef unsigned short ushort;
