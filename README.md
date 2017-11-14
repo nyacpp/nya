@@ -19,6 +19,19 @@ See [nya.hpp](src/nya.hpp) for details.
 The library is free to use — either fork or just copy the file.
 
 ## Additional C++ fun
+* *[enum](src/nya/enum.hpp) with conversion to and from string*
+```c++
+#define MyEnumDef(K, V) \
+	K(One) \
+	V(Two, 20) \
+	K(Three,    "It's the third") \
+	V(Four, 40, "It's the fourth")
+NYA_ENUM(MyEnum, MyEnumDef)
+
+const char* s = etos(One); // to string
+MyEnum e1 = stoe("One");   // from string
+```
+
 * *[exception](src/nya/exception.hpp) with file:line*
 ```c++
 #define throw_nya(message) throw nya::exception(__FILE__, __LINE__, message)
