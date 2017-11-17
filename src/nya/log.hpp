@@ -19,9 +19,8 @@
 #define error_raw    CLOG(ERROR, "raw")
 #define fatal_raw    CLOG(FATAL, "raw")
 
-#include <exception> // maybe template here would be faster to compile?
-inline MAKE_LOGGABLE(std::exception, e, os) { return os << e.what(); }
 
+// implicit conversion std::string ⇒ boost::format
 #include <boost/format.hpp>
 template<typename T>
 boost::format operator % (const std::string& s, T arg) { return boost::format(s) % arg; }

@@ -9,10 +9,12 @@
 #define infin std::numeric_limits<double>::infinity()
 
 // #include <unordered_map>
-#define umap std::unordered_map
+#define umap      std::unordered_map
+#define umultimap std::unordered_multimap
 
 // #include <unordered_set>
-#define uset std::unordered_set
+#define uset      std::unordered_set
+#define umultiset std::unordered_multiset
 
 // #include <memory>
 #define u_p std::unique_ptr
@@ -20,12 +22,15 @@
 #define w_p std::weak_ptr
 #define sp_cast std::static_pointer_cast
 #define dp_cast std::dynamic_pointer_cast
-#define make_p std::make_pair
-#define make_s std::make_shared
 #define make_u std::make_unique
+#define make_s std::make_shared
+
+// other utils
+#define make_p std::make_pair
+#define make_ir boost::make_iterator_range
 
 // common aliases
-#define all_(x) (x).begin(), (x).end()
+#define all_(x) (x).begin(), (x).end() // see also boost::range
 #define in_(a, x) ((x).find(a) != (x).end())
 
 typedef unsigned char uchar;

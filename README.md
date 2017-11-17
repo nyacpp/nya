@@ -34,7 +34,7 @@ MyEnum e1 = stoe("One");   // from string
 
 * *[exception](src/nya/exception.hpp) with file:line*
 ```c++
-#define throw_nya(message) throw nya::exception(__FILE__, __LINE__, message)
+throw_nya << "File %s is not found"s % fileName;
 ```
 
 * *[io](src/nya/io.hpp) notes*
