@@ -1,9 +1,9 @@
-#ifndef _EXCEPTIONNYA_H
-#define    _EXCEPTIONNYA_H
+#ifndef EXCEPTIONNYA_HPP
+#define EXCEPTIONNYA_HPP
 
 #include <exception>
-#include <string>
 #include <sstream>
+#include <nya/format.hpp>
 
 
 /**
@@ -26,12 +26,16 @@ class exception : public std::exception
 	string message;
 public:
 	// can be used only in throw_nya — no idea how to do it better
-	nya::exception& operator =(ostream& other) { message = move(((ostringstream&)other).str()); return *this; }
+	nya::exception& operator =(ostream& other)
+	{
+		message = move(((ostringstream&) other).str());
+		return *this;
+	}
 	
 	operator string() const { return message; }
 	const char* what() const noexcept override { return message.c_str(); }
 };
 }
 
-#endif    /* _EXCEPTIONNYA_H */
+#endif //EXCEPTIONNYA_HPP
 

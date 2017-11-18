@@ -1,5 +1,5 @@
-#ifndef SWITCHNYA_H
-#define SWITCHNYA_H
+#ifndef SWITCHNYA_HPP
+#define SWITCHNYA_HPP
 
 /*
 // If you want switch for std::string:
@@ -60,4 +60,4 @@ It should create lambdas on each call to capture local variables.
 #define switch_(s)       } }; auto i___i = m___m.find(s); auto i___end = m___m.end(); if( i___i != i___end ) i___i->second();
 #define switchD(s)       switch_(s) else
 
-#endif // SWITCHNYA_H
+#endif //SWITCHNYA_HPP

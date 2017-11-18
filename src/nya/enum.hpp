@@ -91,4 +91,4 @@ MyEnum e3 = stoe("Three");
 
 #endif // __cplusplus >= 201103L
 
-#endif // ENUMNYA_HPP
+#endif //ENUMNYA_HPP

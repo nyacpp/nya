@@ -42,5 +42,5 @@ typedef unsigned long long ullong;
 #define NYA_DT_FORMAT "yyyy-MM-dd hh:mm:ss"
 #define NYA_DATE_FORMAT "yyyy-MM-dd"
 
-#endif	/* NYA_HPP */
+#endif //NYA_HPP
 

@@ -37,6 +37,11 @@ MyEnum e1 = stoe("One");   // from string
 throw_nya << "File %s is not found"s % fileName;
 ```
 
+* *[format](src/nya/format.hpp) — boost::format wrapper*
+```c++
+cout << "abc %s ghi"s % "def"; // abc def ghi
+```
+
 * *[io](src/nya/io.hpp) notes*
 ```c++
 ios::sync_with_stdio(false);
