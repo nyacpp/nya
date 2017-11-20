@@ -1,5 +1,5 @@
 # NYA Library
-*It is C++ header only library containing some useful aliases.*
+*[nya.hpp](src/nya.hpp) is C++ header only library containing some useful aliases.*
 ```c++
 #define umap std::unordered_map
 #define uset std::unordered_set
@@ -14,9 +14,15 @@ typedef long long llong;
 
 // and some more ...
 ```
-See [nya.hpp](src/nya.hpp) for details.
+
 
 The library is free to use — either fork or just copy the file.
+```c++
+#include <nya.hpp>
+```
+
+
+-----------------------------------------------------------------
 
 ## Additional C++ fun
 * *[enum](src/nya/enum.hpp) with conversion to and from string*
@@ -73,4 +79,10 @@ switchD( s ) // default
 }
 // or
 switch_( s ) // without default
+```
+
+## Frequently used headers
+Frequently used headers are gathered in [api](src/nya/api.hpp):
+```c++
+#include <nya/api.hpp>
 ```
