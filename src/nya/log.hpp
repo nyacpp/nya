@@ -20,5 +20,11 @@
 #define error_raw    CLOG(ERROR, "raw")
 #define fatal_raw    CLOG(FATAL, "raw")
 
+namespace nya
+{
+static constexpr std::string (&GetThreadName)() = el::Helpers::getThreadName;
+static constexpr void (&SetThreadName)(const std::string&) = el::Helpers::setThreadName;
+}
+
 #endif //LOGNYA_HPP
 

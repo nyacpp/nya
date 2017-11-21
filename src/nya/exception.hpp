@@ -19,20 +19,18 @@
 
 namespace nya
 {
-using namespace std;
-
 class exception : public std::exception
 {
-	string message;
+	std::string message;
 public:
 	// can be used only in throw_nya — no idea how to do it better
-	nya::exception& operator =(ostream& other)
+	nya::exception& operator =(std::ostream& other)
 	{
-		message = move(((ostringstream&) other).str());
+		message = std::move(((std::ostringstream&) other).str());
 		return *this;
 	}
 	
-	operator string() const { return message; }
+	operator std::string() const { return message; }
 	const char* what() const noexcept override { return message.c_str(); }
 };
 }

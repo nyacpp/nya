@@ -59,6 +59,24 @@ cin.tie(0);
 error_log << "Number %d shouldn't be here"s % 5;
 ```
 
+* *[signal](src/nya/signal.hpp) boost signal-slot and event loop wrapper*
+```c++
+nya::sig<void(int)> foo;   // signal
+void bar(int) {}           // slot
+nya::event_loop eventLoop; //
+u_p<thread> th;            // thread for eventLoop
+
+// ...
+{
+    nya::connect_in(eventLoop, foo, bar); // async connect
+    
+    nya::event_loop::work(eventLoop);
+    th.reset(new thread([] { eventLoop.run(); }));
+    
+    foo(); // call bar in "th" thread
+}
+```
+
 * *[switch](src/nya/switch.hpp) for string (and other types)*
 ```c++
 caseS( "one" )
