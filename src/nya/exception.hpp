@@ -1,10 +1,17 @@
 #ifndef EXCEPTIONNYA_HPP
 #define EXCEPTIONNYA_HPP
 
+#include <cstring>
 #include <exception>
 #include <sstream>
 #include <nya/format.hpp>
 
+#ifdef _WIN32
+	#define __DELIM_CHAR__ '\\'
+#else
+	#define __DELIM_CHAR__ '/'
+#endif
+#define __FILENAME__ (strrchr(__FILE__, __DELIM_CHAR__) ? strrchr(__FILE__, __DELIM_CHAR__) + 1 : __FILE__)
 
 /**
  * Exception throwing with std::ostringstream. Stream allows using boost::format.
@@ -14,7 +21,7 @@
  *    throw_nya &lt;&lt; "File %s is not found"s % fileName;
  * \endcode
  */
-#define throw_nya throw nya::exception() = std::ostringstream() << "exception:\n\t" << __FILE__ << ":" << __LINE__ << " >> "
+#define throw_nya throw nya::exception() = std::ostringstream() << __FILENAME__ << ":" << __LINE__ << " -- "
 
 
 namespace nya
