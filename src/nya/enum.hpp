@@ -38,13 +38,17 @@ switch (e2)
 CXX_STANDARD 98
 */
 
-#include <string.h>
+#include <cstring>
+#include <string>
 
 #define NYA_ENUM_K(KEY) KEY,
 #define NYA_ENUM_KV(KEY, VALUE) KEY = VALUE,
 
 #define NYA_ELIF_K(KEY) else if (!strcmp(str, #KEY)) value = KEY;
 #define NYA_ELIF_KV(KEY, VALUE) NYA_ELIF_K(KEY)
+
+#define NYA_ELIFS_K(KEY) else if (str == #KEY) value = KEY;
+#define NYA_ELIFS_KV(KEY, VALUE) NYA_ELIFS_K(KEY)
 
 #define NYA_CASE_K(KEY) case KEY: return #KEY;
 #define NYA_CASE_KV(KEY, VALUE) NYA_CASE_K(KEY)
@@ -54,12 +58,20 @@ struct ENUM_NAME                                                 \
 {                                                                \
     enum ENUM_NAME##Enum { ENUM_DEF(NYA_ENUM_K, NYA_ENUM_KV) };  \
                                                                  \
+    ENUM_NAME() : value((ENUM_NAME##Enum)-1) {}                  \
     ENUM_NAME(ENUM_NAME##Enum en) : value(en) {}                 \
                                                                  \
     ENUM_NAME(const char* str)                                   \
     {                                                            \
         if (!*str) value = (ENUM_NAME##Enum)-1;                  \
         ENUM_DEF(NYA_ELIF_K, NYA_ELIF_KV)                        \
+        else value = (ENUM_NAME##Enum)-1;                        \
+    }                                                            \
+                                                                 \
+    ENUM_NAME(const string& str)                                 \
+    {                                                            \
+        if (str.empty()) value = (ENUM_NAME##Enum)-1;            \
+        ENUM_DEF(NYA_ELIFS_K, NYA_ELIFS_KV)                      \
         else value = (ENUM_NAME##Enum)-1;                        \
     }                                                            \
                                                                  \
