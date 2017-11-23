@@ -3,92 +3,79 @@
 
 /*
 // If you want enum with string conversions:
-enum MyEnum
+enum class MyEnum
 {
 	One,
 	Two = 20,
-	Three,     // It's the third one
-	Four = 40, // It's the fourth one
-	Five,
-	Six
+	Three,     // It's the third
+	Four = 40, // It's the fourth
 };
 
 // Write something like this:
-#define MyEnumDef(K, V) \
-	K(One) \
-	V(Two, 20) \
-	K(Three,    "It's the third") \
-	V(Four, 40, "It's the fourth")
-NYA_ENUM(MyEnum, MyEnumDef)
+#define MyEnumDef(K, V)               \
+	K(One)                            \
+	V(Two, 20)                        \
+	K(Three)    /* It's the third * / \
+	V(Four, 40) /* It's the fourth * /
+nya_enum(MyEnum, MyEnumDef)
 
 
-// Getting string. If wrong, return "!~MyEnum~"
+// enum to string. If wrong, return "!~MyEnum~"
 // ( implemented with usual switch )
-const char* s = etos(One);
+MyEnum e1 = MyEnum::One;
+cout << e1 << endl;         // 0
+cout << e1.c_str() << endl; // "One"
 
-// Getting number. If wrong, return -1
-// ( implemented with static unordered_map )
-MyEnum e1 = stoe("One");
-MyEnum e2 = stoe("Two");
-MyEnum e3 = stoe("Three");
+// string to enum. If wrong, return -1
+// ( implemented with if-else strcmp )
+MyEnum e2 = "Two";
+switch (e2)
+{
+	case MyEnum::One: cout << "-> 1\n"; break;
+	case MyEnum::Two: cout << "-> 2\n"; break;
+}
 
-
-// Waiting for c++20 __VA_OPT__ to use enum class...
-// For lower versions namespace around enum can help a bit.
+CXX_STANDARD 98
 */
 
-#if __cplusplus >= 201103L
-#include <unordered_map>
-#include <string>
-
-#if __cplusplus >= 201703L
-#define _prefix_enumnya [[maybe_unused]] static
-#else
-#define _prefix_enumnya template<typename ...>
-#endif
-
-#define NYA_ENUM_K(KEY, ...) KEY,
-#define NYA_ENUM_KV(KEY, VALUE, ...) KEY = VALUE,
-#define NYA_CASE_K(KEY, ...) case KEY: return #KEY;
-#define NYA_MAP_K(KEY, ...) { #KEY, KEY },
-
-#define NYA_ENUM(ENUM_NAME, ENUM_DEF) \
-	enum ENUM_NAME { ENUM_DEF(NYA_ENUM_K, NYA_ENUM_KV) }; \
-	\
-	_prefix_enumnya const char* etos(ENUM_NAME e) \
-	{ switch( e ) { ENUM_DEF(NYA_CASE_K, NYA_CASE_K) default: return "!~" #ENUM_NAME "~"; } } \
-	\
-	_prefix_enumnya ENUM_NAME stoe(const char* s) \
-	{ static std::unordered_map<std::string, ENUM_NAME> m = { ENUM_DEF(NYA_MAP_K, NYA_MAP_K) }; \
-	  auto it = m.find(s); if( it != m.end() ) return it->second; return (ENUM_NAME)-1; }
-	
-#else // C or C++03
-// Only enums with comments provided by default! Use NYA_ENUM4 for full syntax.
-// It'll cause warnings. You can supress them with -Wno-unused-function
-// stoe() is not defined.
-// Maybe you'll need some undefs, because scope is global: #undef One
+#include <string.h>
 
 #define NYA_ENUM_K(KEY) KEY,
 #define NYA_ENUM_KV(KEY, VALUE) KEY = VALUE,
-#define NYA_ENUM_KC(KEY, COMMENT) NYA_ENUM_K(KEY)
-#define NYA_ENUM_KVC(KEY, VALUE, COMMENT) NYA_ENUM_KV(KEY, VALUE)
+
+#define NYA_ELIF_K(KEY) else if (!strcmp(str, #KEY)) value = KEY;
+#define NYA_ELIF_KV(KEY, VALUE) NYA_ELIF_K(KEY)
 
 #define NYA_CASE_K(KEY) case KEY: return #KEY;
-#define NYA_CASE_K1(KEY, VALUE_COMMENT) NYA_CASE_K(KEY)
-#define NYA_CASE_KVC(KEY, VALUE, COMMENT) NYA_CASE_K(KEY)
+#define NYA_CASE_KV(KEY, VALUE) NYA_CASE_K(KEY)
 
-#define NYA_ENUM(ENUM_NAME, ENUM_DEF) \
-	enum ENUM_NAME { ENUM_DEF(NYA_ENUM_KC, NYA_ENUM_KVC) }; \
-	\
-	static const char* etos(ENUM_NAME e) \
-	{  switch( e ) { ENUM_DEF(NYA_CASE_K1, NYA_CASE_KVC) default: return "!~" #ENUM_NAME "~"; } }
-
-#define NYA_ENUM4(ENUM_NAME, ENUM_DEF) \
-	enum ENUM_NAME { ENUM_DEF(NYA_ENUM_K, NYA_ENUM_KV, NYA_ENUM_KC, NYA_ENUM_KVC) }; \
-	\
-	static const char* etos(ENUM_NAME e) \
-	{  switch( e ) { ENUM_DEF(NYA_CASE_K, NYA_CASE_K1, NYA_CASE_K1, NYA_CASE_KVC) default: return "!~" #ENUM_NAME "~"; } }
-
-#endif // __cplusplus >= 201103L
+#define nya_enum(ENUM_NAME, ENUM_DEF)                            \
+struct ENUM_NAME                                                 \
+{                                                                \
+    enum ENUM_NAME##Enum { ENUM_DEF(NYA_ENUM_K, NYA_ENUM_KV) };  \
+                                                                 \
+    ENUM_NAME(ENUM_NAME##Enum en) : value(en) {}                 \
+                                                                 \
+    ENUM_NAME(const char* str)                                   \
+    {                                                            \
+        if (!*str) value = (ENUM_NAME##Enum)-1;                  \
+        ENUM_DEF(NYA_ELIF_K, NYA_ELIF_KV)                        \
+        else value = (ENUM_NAME##Enum)-1;                        \
+    }                                                            \
+                                                                 \
+    const char* c_str() const                                    \
+    {                                                            \
+        switch (value)                                           \
+        {                                                        \
+            ENUM_DEF(NYA_CASE_K, NYA_CASE_KV)                    \
+            default: return "!~" #ENUM_NAME "~";                 \
+        }                                                        \
+    }                                                            \
+                                                                 \
+    operator ENUM_NAME##Enum() const { return value; }           \
+                                                                 \
+private:                                                         \
+    ENUM_NAME##Enum value;                                       \
+};
 
 #endif //ENUMNYA_HPP

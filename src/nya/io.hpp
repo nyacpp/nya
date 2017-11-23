@@ -2,7 +2,6 @@
 #define IONYA_HPP
 
 #include <iostream>
-#include <string>
 
 
 /**
@@ -14,6 +13,7 @@ static void speedup_ios()
 	std::cin.tie(0);                  // flush manually before cin
 }
 
+#include <string>
 /**
  *  Use operator string() for class output.
  */
@@ -21,5 +21,18 @@ static std::ostream& operator <<(std::ostream& os, const std::string& s)
 {
 	return std::operator <<(os, s);
 }
+
+#ifndef NYA_DISABLE_VARIANT
+#include <variant>
+/**
+ *  Print variant into ostream.
+ */
+template<typename... Args>
+std::ostream& operator<< (std::ostream& os, const std::variant<Args...>& var)
+{
+	std::visit([&os](auto&& arg) { os << arg; }, var);
+	return os;
+}
+#endif //NYA_DISABLE_VARIANT
 
 #endif //IONYA_HPP

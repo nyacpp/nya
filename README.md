@@ -27,15 +27,21 @@ The library is free to use — either fork or just copy the file.
 ## Additional C++ fun
 * *[enum](src/nya/enum.hpp) with conversion to and from string*
 ```c++
-#define MyEnumDef(K, V) \
-	K(One) \
-	V(Two, 20) \
-	K(Three,    "It's the third") \
-	V(Four, 40, "It's the fourth")
-NYA_ENUM(MyEnum, MyEnumDef)
+#define MyEnumDef(K, V)             \
+  K(One)                            \
+  V(Two, 20)                        \
+  K(Three)    /* It's the third * / \
+  V(Four, 40) /* It's the fourth * /
+nya_enum(MyEnum, MyEnumDef)
 
-const char* s = etos(One); // to string
-MyEnum e1 = stoe("One");   // from string
+MyEnum e1 = MyEnum::One;
+const char* s = e1.c_str();  // to string
+MyEnum e2 = "Two";           // from string
+switch (e2)                  // switch
+{
+  case MyEnum::One: cout << "-> 1\n"; break;
+  case MyEnum::Two: cout << "-> 2\n"; break;
+}
 ```
 
 * *[exception](src/nya/exception.hpp) with file:line*
