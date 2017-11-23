@@ -27,11 +27,11 @@ The library is free to use — either fork or just copy the file.
 ## Additional C++ fun
 * *[enum](src/nya/enum.hpp) with conversion to and from string*
 ```c++
-#define MyEnumDef(K, V)             \
-  K(One)                            \
-  V(Two, 20)                        \
-  K(Three)    /* It's the third * / \
-  V(Four, 40) /* It's the fourth * /
+#define MyEnumDef(K, V)               \
+  K(One)                              \
+  V(Two, 20)                          \
+  K(Three)    / * It's the third * /  \
+  V(Four, 40) / * It's the fourth * /
 nya_enum(MyEnum, MyEnumDef)
 
 MyEnum e1 = MyEnum::One;
