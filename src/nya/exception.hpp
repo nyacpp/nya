@@ -18,10 +18,10 @@
  *
  * \code{.cpp}
  *    // example
- *    throw_nya &lt;&lt; "File %s is not found"s % fileName;
+ *    nya_throw &lt;&lt; "File %s is not found"s % fileName;
  * \endcode
  */
-#define throw_nya throw nya::exception() = std::ostringstream() << __FILENAME__ << ":" << __LINE__ << " -- "
+#define nya_throw throw nya::exception() = std::ostringstream() << __FILENAME__ << ":" << __LINE__ << " -- "
 
 
 namespace nya
@@ -30,7 +30,7 @@ class exception : public std::exception
 {
 	std::string message;
 public:
-	// can be used only in throw_nya — no idea how to do it better
+	// can be used only in nya_throw — no idea how to do it better
 	nya::exception& operator =(std::ostream& other)
 	{
 		message = std::move(((std::ostringstream&) other).str());

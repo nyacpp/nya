@@ -46,7 +46,7 @@ switch (e2)                  // switch
 
 * *[exception](src/nya/exception.hpp) with file:line*
 ```c++
-throw_nya << "File %s is not found"s % fileName;
+nya_throw << "File %s is not found"s % fileName;
 ```
 
 * *[format](src/nya/format.hpp) — boost::format wrapper*
