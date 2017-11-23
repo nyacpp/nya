@@ -83,28 +83,6 @@ u_p<thread> th;            // thread for eventLoop
 }
 ```
 
-* *[switch](src/nya/switch.hpp) for string (and other types)*
-```c++
-caseS( "one" )
-{
-	std::cout << "!\n";
-}
-case_( "two" )
-{
-	std::cout << "!!\n";
-}
-case_( "three" )
-{
-	std::cout << "!!!\n";
-}
-switchD( s ) // default
-{
-	std::cout << "Non-non\n";
-}
-// or
-switch_( s ) // without default
-```
-
 ## Frequently used headers
 Frequently used headers are gathered in [api](src/nya/api.hpp):
 ```c++
