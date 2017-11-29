@@ -11,8 +11,8 @@ template<typename ...Ts>
 using sig = boost::signals2::signal<Ts...>;
 using event_loop = boost::asio::io_service;
 
-template<typename ...Args, typename Slot>
-void connect_in(event_loop& eventLoop, sig<void(Args...)>& signalFunc, Slot&& slotFunc)
+template<typename ...Args>
+void connect_in(event_loop& eventLoop, sig<void(Args...)>& signalFunc, typename sig<void(Args...)>::slot_type slotFunc)
 {
 	signalFunc.connect([&eventLoop, slotFunc](Args... args)
 	{

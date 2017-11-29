@@ -12,11 +12,11 @@ enum class MyEnum
 };
 
 // Write something like this:
-#define MyEnumDef(K, V)               \
-	K(One)                            \
-	V(Two, 20)                        \
-	K(Three)    /* It's the third * / \
-	V(Four, 40) /* It's the fourth * /
+#define MyEnumDef(K, V)                 \
+	K(One)                              \
+	V(Two, 20)                          \
+	K(Three)    / * It's the third * /  \
+	V(Four, 40) / * It's the fourth * /
 nya_enum(MyEnum, MyEnumDef)
 
 
@@ -68,7 +68,7 @@ struct ENUM_NAME                                                 \
         else value = (ENUM_NAME##Enum)-1;                        \
     }                                                            \
                                                                  \
-    ENUM_NAME(const string& str)                                 \
+    ENUM_NAME(const std::string& str)                            \
     {                                                            \
         if (str.empty()) value = (ENUM_NAME##Enum)-1;            \
         ENUM_DEF(NYA_ELIFS_K, NYA_ELIFS_KV)                      \

@@ -27,8 +27,8 @@ static std::ostream& operator <<(std::ostream& os, const std::string& s)
 /**
  *  Print variant into ostream.
  */
-template<typename... Args>
-std::ostream& operator<< (std::ostream& os, const std::variant<Args...>& var)
+template<typename T, typename... Args> // T - must be at least one argument
+std::ostream& operator<< (std::ostream& os, const std::variant<T, Args...>& var)
 {
 	std::visit([&os](auto&& arg) { os << arg; }, var);
 	return os;

@@ -2,6 +2,8 @@
 #define FORMATNYA_HPP
 
 /**
+ * using namespace std::string_literals;
+ *
  * cout << "abc %s ghi"s % "def"; // abc def ghi
  */
 
@@ -12,7 +14,7 @@
 template<typename T>
 boost::format operator %(const std::string& s, T arg) { return boost::format(s) % arg; }
 
-// ""_f instead of ""s, though no templates:
+// ""_f instead of ""s, though no templates and no usings:
 //boost::format operator "" _f(const char* s, std::size_t) { return boost::format(s); }
 
 #endif //FORMATNYA_HPP

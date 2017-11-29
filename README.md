@@ -27,11 +27,11 @@ The library is free to use — either fork or just copy the file.
 ## Additional C++ fun
 * *[enum](src/nya/enum.hpp) with conversion to and from string*
 ```c++
-#define MyEnumDef(K, V)               \
-  K(One)                              \
-  V(Two, 20)                          \
-  K(Three)    / * It's the third * /  \
-  V(Four, 40) / * It's the fourth * /
+#define MyEnumDef(K, V)                 \
+    K(One)                              \
+    V(Two, 20)                          \
+    K(Three)    /* It's the third */    \
+    V(Four, 40) /* It's the fourth */
 nya_enum(MyEnum, MyEnumDef)
 
 MyEnum e1 = MyEnum::One;
@@ -39,8 +39,8 @@ const char* s = e1.c_str();  // to string
 MyEnum e2 = "Two";           // from string
 switch (e2)                  // switch
 {
-  case MyEnum::One: cout << "-> 1\n"; break;
-  case MyEnum::Two: cout << "-> 2\n"; break;
+    case MyEnum::One: cout << "-> 1\n"; break;
+    case MyEnum::Two: cout << "-> 2\n"; break;
 }
 ```
 
@@ -56,8 +56,8 @@ cout << "abc %s ghi"s % "def"; // abc def ghi
 
 * *[io](src/nya/io.hpp) notes*
 ```c++
-ios::sync_with_stdio(false);
-cin.tie(0);
+cout << SomeClass();
+cout << std::variant<int, float>(1);
 ```
 
 * *cozy [log](src/nya/log.hpp)*
@@ -67,19 +67,22 @@ error_log << "Number %d shouldn't be here"s % 5;
 
 * *[signal](src/nya/signal.hpp) boost signal-slot and event loop wrapper*
 ```c++
-nya::sig<void(int)> foo;   // signal
-void bar(int) {}           // slot
-nya::event_loop eventLoop; //
-u_p<thread> th;            // thread for eventLoop
+nya::sig<void(int)> foo;           // signal
+void bar(int y) { x1 = y; }        // slot 1
+auto baz = [](int y) { x2 = y; };  // slot 2
 
-// ...
 {
-    nya::connect_in(eventLoop, foo, bar); // async connect
+    nya::event_loop eventLoop;
+    nya::connect_in(eventLoop, foo, bar);      // async connect to function
+    nya::connect_in(eventLoop, foo, baz);      // async connect to lambda
+  
+    auto w = make_u<nya::event_loop::work>(eventLoop);
+    thread th([&eventLoop] { eventLoop.run(); });
     
-    nya::event_loop::work(eventLoop);
-    th.reset(new thread([] { eventLoop.run(); }));
+    foo(5); // call slots in "th" thread
     
-    foo(); // call bar in "th" thread
+    w.reset();
+    th.join();
 }
 ```
 
