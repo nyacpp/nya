@@ -51,13 +51,13 @@ nya_throw << "File %s is not found"s % fileName;
 
 * *[format](src/nya/format.hpp) — boost::format wrapper*
 ```c++
-cout << "abc %s ghi"s % "def"; // abc def ghi
+cout << "Alpha %s Gamma"s % "Beta"; // "Alpha Beta Gamma"
 ```
 
 * *[io](src/nya/io.hpp) notes*
 ```c++
-cout << SomeClass();
-cout << std::variant<int, float>(1);
+cout << SomeClass(); // any class with string cast operator
+cout << std::variant<int, float>(1); // variant streaming is not in std yet
 ```
 
 * *cozy [log](src/nya/log.hpp)*
@@ -65,7 +65,7 @@ cout << std::variant<int, float>(1);
 error_log << "Number %d shouldn't be here"s % 5;
 ```
 
-* *[signal](src/nya/signal.hpp) boost signal-slot and event loop wrapper*
+* *[signal](src/nya/signal.hpp) — boost signal-slot and event loop wrapper*
 ```c++
 nya::sig<void(int)> foo;           // signal
 void bar(int y) { x1 = y; }        // slot 1
