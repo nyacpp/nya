@@ -10,5 +10,6 @@
 #include <nya.hpp>
 #include <nya/exception.hpp>
 #include <nya/log.hpp>
+#include <boost/core/noncopyable.hpp>
 
 #endif //NYAAPI_HPP
