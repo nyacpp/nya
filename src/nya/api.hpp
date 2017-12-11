@@ -1,6 +1,7 @@
 #ifndef NYAAPI_HPP
 #define NYAAPI_HPP
 
+#include <cmath>
 #include <memory>
 #include <string>
 #include <vector>
