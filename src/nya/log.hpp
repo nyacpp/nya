@@ -8,19 +8,6 @@
  * error_log << "Number %d shouldn't be here"s % 5;
  *
  */
-#ifndef ELPP_STL_LOGGING
-#define ELPP_STL_LOGGING
-#endif
-#ifndef ELPP_LOG_STD_ARRAY
-#define ELPP_LOG_STD_ARRAY
-#endif
-#ifndef ELPP_LOG_UNORDERED_MAP
-#define ELPP_LOG_UNORDERED_MAP
-#endif
-#ifndef ELPP_LOG_UNORDERED_SET
-#define ELPP_LOG_UNORDERED_SET
-#endif
-
 #include <easylogging++.h>
 #include <nya/format.hpp>
 
