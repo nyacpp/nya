@@ -12,5 +12,12 @@
 #include <nya/exception.hpp>
 #include <nya/log.hpp>
 #include <boost/core/noncopyable.hpp>
+#include <boost/range/adaptors.hpp>
+#include <boost/range/irange.hpp>
+
+namespace nya
+{
+using namespace boost::adaptors;
+}
 
 #endif //NYAAPI_HPP
