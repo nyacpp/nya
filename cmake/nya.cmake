@@ -1,3 +1,6 @@
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED on)
+
 # msvc
 if(MSVC)
     add_compile_options("/std:c++latest")

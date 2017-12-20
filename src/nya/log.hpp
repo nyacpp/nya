@@ -24,6 +24,16 @@ namespace nya
 {
 static constexpr std::string (&GetThreadName)() = el::Helpers::getThreadName;
 static constexpr void (&SetThreadName)(const std::string&) = el::Helpers::setThreadName;
+
+inline void init_logs(const char* configPath)
+{
+	el::Loggers::configureFromGlobal(configPath);
+	el::Configurations rawConf;
+	rawConf.parseFromText("*GLOBAL:\n FORMAT = %msg", el::Loggers::getLogger("default")->configurations());
+	el::Loggers::getLogger("raw")->configure(rawConf);
+	
+	nya::SetThreadName("_main_");
+}
 }
 
 #endif //LOGNYA_HPP
