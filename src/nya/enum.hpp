@@ -53,13 +53,15 @@ CXX_STANDARD 98
 #define NYA_CASE_K(KEY) case KEY: return #KEY;
 #define NYA_CASE_KV(KEY, VALUE) NYA_CASE_K(KEY)
 
-#define nya_enum(ENUM_NAME, ENUM_DEF)                            \
+#define nya_typed_enum(ENUM_NAME, ENUM_DEF, ENUM_TYPE)           \
 struct ENUM_NAME                                                 \
 {                                                                \
-    enum ENUM_NAME##Enum { ENUM_DEF(NYA_ENUM_K, NYA_ENUM_KV) };  \
+    enum ENUM_NAME##Enum : ENUM_TYPE                             \
+    { ENUM_DEF(NYA_ENUM_K, NYA_ENUM_KV) };                       \
                                                                  \
     ENUM_NAME() : value((ENUM_NAME##Enum)-1) {}                  \
     ENUM_NAME(ENUM_NAME##Enum en) : value(en) {}                 \
+    ENUM_NAME(ENUM_TYPE n) : value((ENUM_NAME##Enum)n) {}        \
                                                                  \
     ENUM_NAME(const char* str)                                   \
     {                                                            \
@@ -89,5 +91,7 @@ struct ENUM_NAME                                                 \
 private:                                                         \
     ENUM_NAME##Enum value;                                       \
 };
+
+#define nya_enum(ENUM_NAME, ENUM_DEF) nya_typed_enum(ENUM_NAME, ENUM_DEF, int)
 
 #endif //ENUMNYA_HPP
