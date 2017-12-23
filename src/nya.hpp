@@ -26,6 +26,7 @@
 #define make_s std::make_shared
 
 // other utils
+#define nya_forward(v) std::forward<decltype(v)>(v)
 #define make_p std::make_pair
 #define make_ir boost::make_iterator_range
 

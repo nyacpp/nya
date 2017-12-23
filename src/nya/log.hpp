@@ -20,11 +20,11 @@
 #define error_raw    CLOG(ERROR, "raw")
 #define fatal_raw    CLOG(FATAL, "raw")
 
+#define nya_thread_name el::Helpers::setThreadName
+
 namespace nya
 {
-static constexpr std::string (&GetThreadName)() = el::Helpers::getThreadName;
-static constexpr void (&SetThreadName)(const std::string&) = el::Helpers::setThreadName;
-
+template<typename ...>
 inline void init_logs(const char* configPath)
 {
 	el::Loggers::configureFromGlobal(configPath);
@@ -32,7 +32,7 @@ inline void init_logs(const char* configPath)
 	rawConf.parseFromText("*GLOBAL:\n FORMAT = %msg", el::Loggers::getLogger("default")->configurations());
 	el::Loggers::getLogger("raw")->configure(rawConf);
 	
-	nya::SetThreadName("_main_");
+	nya_thread_name("_main_");
 }
 }
 
