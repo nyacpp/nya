@@ -56,6 +56,8 @@ CXX_STANDARD 98
 #define nya_typed_enum(ENUM_NAME, ENUM_DEF, ENUM_TYPE)           \
 struct ENUM_NAME                                                 \
 {                                                                \
+    typedef ENUM_TYPE value_type;                                \
+                                                                 \
     enum ENUM_NAME##Enum : ENUM_TYPE                             \
     { ENUM_DEF(NYA_ENUM_K, NYA_ENUM_KV) };                       \
                                                                  \
