@@ -2,9 +2,9 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED on)
 
 # msvc
-if(MSVC)
-    add_compile_options("/std:c++latest")
-endif(MSVC)
+#if(MSVC)
+#    add_compile_options("/std:c++latest")
+#endif(MSVC)
 
 # definitions
 add_definitions(-DBOOST_MOVE_USE_STANDARD_LIBRARY_MOVE) # std::move and boost::move won't interfere
@@ -19,3 +19,10 @@ add_definitions(-DELPP_LOG_STD_ARRAY)                   #
 add_definitions(-DELPP_LOG_UNORDERED_MAP)               #
 add_definitions(-DELPP_LOG_UNORDERED_SET)               #
 add_definitions(-DELPP_THREAD_SAFE)                     # thread name
+
+# gui application setting
+if (APPLE)
+    set(OS_BUNDLE MACOSX_BUNDLE)
+elseif(WIN32)
+    set(OS_BUNDLE WIN32)
+endif()

@@ -28,6 +28,7 @@
 // other utils
 #define nya_forward(v) std::forward<decltype(v)>(v)
 #define make_p std::make_pair
+#define make_t std::make_tuple
 #define make_ir boost::make_iterator_range
 
 // common aliases
