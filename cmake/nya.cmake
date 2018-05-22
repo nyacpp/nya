@@ -1,14 +1,10 @@
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED on)
 
-# msvc
-#if(MSVC)
-#    add_compile_options("/std:c++latest")
-#endif(MSVC)
-
 # definitions
 add_definitions(-DBOOST_MOVE_USE_STANDARD_LIBRARY_MOVE) # std::move and boost::move won't interfere
 add_definitions(-DWIN32_LEAN_AND_MEAN)                  # for boost::asio - reduces windows.h
+add_definitions(-D_USE_MATH_DEFINES)                    # math constants like M_PI
 
 # easylogging
 set(build_static_lib ON CACHE BOOL "Build easyloggingpp as a static library" FORCE)

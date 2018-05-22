@@ -27,22 +27,24 @@
 
 // other utils
 #define nya_forward(v) std::forward<decltype(v)>(v)
-#define make_p std::make_pair
-#define make_t std::make_tuple
-#define make_ir boost::make_iterator_range
+#define nya_pair   std::make_pair
+#define nya_tuple  std::make_tuple
+#define nya_irange boost::make_iterator_range
 
 // common aliases
-#define all_(x) (x).begin(), (x).end() // see also boost::range
-#define in_(a, x) ((x).find(a) != (x).end())
+#define nya_all(x) (x).begin(), (x).end() // see also boost::range
+#define nya_in(a, x) ((x).find(a) != (x).end())
 
+// string constants
+#define NYA_DT_FORMAT "yyyy-MM-dd hh:mm:ss"
+#define NYA_DATE_FORMAT "yyyy-MM-dd"
+
+// types
 typedef unsigned char uchar;
 typedef unsigned short ushort;
 typedef unsigned int uint;
 typedef long long llong;
 typedef unsigned long long ullong;
-
-#define NYA_DT_FORMAT "yyyy-MM-dd hh:mm:ss"
-#define NYA_DATE_FORMAT "yyyy-MM-dd"
 
 #endif //NYA_HPP
 
