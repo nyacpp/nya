@@ -21,7 +21,7 @@ elseif(WIN32)
 endif()
 
 # FetchContent into ../folder_name
-# nya_fetch(<url> <tag> <folder_name>)
+# nya_fetch(<git_url> <tag|branch|hash> <folder_name>)
 macro(nya_fetch)
     if(NOT ${ARGC} EQUAL 0)
         if(${ARGC} GREATER 1)
