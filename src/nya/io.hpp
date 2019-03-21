@@ -17,9 +17,19 @@ static void speedup_ios()
 /**
  *  Use operator string() for class output.
  */
-static std::ostream& operator <<(std::ostream& os, const std::string& s)
+inline std::ostream& operator <<(std::ostream& os, const std::string& s)
 {
 	return std::operator <<(os, s);
+}
+
+/**
+ * getline() that works with windows/linux line endings (\n, \r\n)
+ */
+inline std::istream& nya_getline(std::istream& is, std::string& t)
+{
+	getline(is, t);
+	if (t.size() && t.back() == '\r') t.resize(t.size() - 1);
+	return is;
 }
 
 #ifndef NYA_DISABLE_VARIANT
