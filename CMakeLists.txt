@@ -10,7 +10,7 @@ if(NYA_TESTS)
 	message(STATUS "nya tests enabled")
 
 	set(Boost_USE_STATIC_LIBS ON)
-	find_package(Boost 1.69.0 REQUIRED system)
+	find_package(Boost 1.67 REQUIRED system)
 
 	set(TESTS_NAME ${PROJECT_NAME}_tests)
 	file(GLOB_RECURSE TEST_SOURCES test/*.cpp test/*.h test/*.hpp)
