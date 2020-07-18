@@ -1,3 +1,5 @@
+option(FETCHCONTENT_UPDATES_DISCONNECTED "by default do not try to update the repo each time" ON)
+
 include(FetchContent)
 
 # FetchContent into ../folder_name
@@ -17,7 +19,6 @@ macro(nya_fetch)
 		endif()
 
 		get_filename_component(FETCH_ROOT ${CMAKE_SOURCE_DIR}/../${FETCH_NAME}  ABSOLUTE)
-		get_filename_component(BINARY_DIR_NAME ${CMAKE_BINARY_DIR} NAME)
 
 		message("++ fetch: " ${FETCH_ROOT})
 
@@ -25,8 +26,7 @@ macro(nya_fetch)
 				GIT_REPOSITORY ${ARGV0}
 				GIT_TAG        ${FETCH_TAG}
 				SOURCE_DIR     ${FETCH_ROOT}
-				BINARY_DIR     ${FETCH_ROOT}/${BINARY_DIR_NAME}
-				)
+		)
 		FetchContent_MakeAvailable(${FETCH_NAME})
 	endif()
 endmacro(nya_fetch)
