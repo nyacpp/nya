@@ -4,24 +4,7 @@ project(nya)
 add_library(${PROJECT_NAME} INTERFACE)
 target_include_directories(${PROJECT_NAME} INTERFACE src)
 
-
 # tests
 if(NYA_TESTS)
-	message(STATUS "nya tests enabled")
-
-	set(Boost_USE_STATIC_LIBS ON)
-	find_package(Boost 1.67 REQUIRED system)
-
-	set(TESTS_NAME ${PROJECT_NAME}_tests)
-	file(GLOB_RECURSE TEST_SOURCES test/*.cpp test/*.h test/*.hpp)
-
-	add_executable(${TESTS_NAME} EXCLUDE_FROM_ALL ${TEST_SOURCES})
-	target_compile_features(${TESTS_NAME} PUBLIC cxx_std_17)
-	target_include_directories(${TESTS_NAME} PRIVATE ../catch)      # catch
-	target_link_libraries(${TESTS_NAME} -static
-			${PROJECT_NAME}
-			${Boost_SYSTEM_LIBRARY})
-	if(MINGW)
-		target_link_libraries(${TESTS_NAME} ws2_32) # boost::asio
-	endif()
+    add_subdirectory(test)
 endif()

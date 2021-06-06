@@ -1,4 +1,4 @@
-#include <catch.hpp>
+#include <catch2/catch.hpp>
 #include <nya/format.hpp>
 
 TEST_CASE( "nya format", "[nya]" )

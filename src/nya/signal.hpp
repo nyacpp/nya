@@ -14,24 +14,24 @@ using sig = boost::signals2::signal<Ts...>;
 using event_loop = boost::asio::io_service;
 
 
-template<typename ...Args>
-void invoke_in(event_loop& eventLoop, typename sig<void(Args...)>::slot_type&& slotFunc, Args... args)
+template<typename Slot, typename ...Args>
+void invoke_in(event_loop& eventLoop, Slot&& slotFunc, Args... args)
 {
 	using namespace std;
 	// move arguments to other thread
-	eventLoop.post([slotFunc = move(slotFunc), argsT = make_tuple(move(args)...)]() mutable
+	eventLoop.post([slotFunc = forward<Slot>(slotFunc), argsT = make_tuple(move(args)...)]() mutable
 	{
 		// move arguments from lambda to slotFunc
 		apply(move(slotFunc), move(argsT));
 	});
 }
 
-template<typename ...Args>
-void connect_in(event_loop& eventLoop, sig<void(Args...)>& signalFunc, typename sig<void(Args...)>::slot_type&& slotFunc)
+template<template<typename, typename ...> class Signal, typename Slot, typename ...Args, typename ...Ts>
+void connect_in(event_loop& eventLoop, Signal<void(Args...), Ts...>& signalFunc, Slot&& slotFunc)
 {
 	using namespace std;
 	// arguments are copied, because there can be multiple slots
-	signalFunc.connect([&eventLoop, slotFunc = move(slotFunc)](Args... args) mutable
+	signalFunc.connect([&eventLoop, slotFunc = forward<Slot>(slotFunc)](Args... args) mutable
 	{
 		// slot is copied, because it can be called multiple times
 		auto slotCopy = slotFunc;
@@ -46,20 +46,21 @@ protected:
 	static nya::event_loop eventLoop;
 
 public:
-	template<typename ...Args>
-	static void invoke(typename sig<void(Args...)>::slot_type&& slotFunc, Args... args)
+	template<typename Slot, typename ...Args>
+	static void invoke(Slot&& slotFunc, Args... args)
 	{
 		using namespace std;
-		if constexpr (sizeof...(Args))
-			invoke_in(eventLoop, move(slotFunc), move(args)...);
+		if constexpr (sizeof...(Args) != 0)
+			invoke_in(eventLoop, forward<Slot>(slotFunc), move(args)...);
 		else
-			eventLoop.post(move(slotFunc));
+			eventLoop.post(forward<Slot>(slotFunc));
 	}
-	
-	template<typename ...Args>
-	static void connect(nya::sig<void(Args...)>& signalFunc, typename sig<void(Args...)>::slot_type&& slotFunc)
+
+	template<template<typename, typename ...> class Signal, typename Slot, typename ...Args, typename ...Ts>
+	static void connect(Signal<void(Args...), Ts...>& signalFunc, Slot&& slotFunc)
 	{
-		nya::connect_in(eventLoop, signalFunc, std::move(slotFunc));
+		using namespace std;
+		nya::connect_in(eventLoop, signalFunc, forward<Slot>(slotFunc));
 	}
 };
 template<class T> nya::event_loop nya::event_loop_holder<T>::eventLoop;
