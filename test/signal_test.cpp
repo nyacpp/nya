@@ -1,10 +1,14 @@
 #include <catch2/catch.hpp>
 #include <thread>
+#include <boost/signals2.hpp>
 #include <nya/signal.hpp>
+#include <nya/event_loop.hpp>
 #include <nya.hpp>
 
-using namespace std;
 
+using namespace std;
+template<typename F>
+using sig = boost::signals2::signal<F>;
 
 int x1 = 0, x2 = 0, x3 = 0;
 void bar(int y) { x1 = y; }        // slot 1
@@ -13,11 +17,10 @@ auto baz = [](int y) { x2 = y; };  // slot 2
 TEST_CASE( "nya signal", "[nya]" )
 {
 	nya::event_loop eventLoop;
-	auto w = make_u<nya::event_loop::work>(eventLoop); // asio work
-	thread th([&eventLoop] { eventLoop.run(); });
+	thread th([&eventLoop] { eventLoop.start(); });
 
-	nya::sig<void(int)> foo; // signal with int argument
-	nya::sig<void()> foon;    // signal without arguments
+	sig<void(int)> foo; // signal with int argument
+	sig<void()> foon;    // signal without arguments
 
 	// invoke
 	nya::invoke_in(eventLoop, bar, 3);      // invoke function
@@ -53,12 +56,12 @@ TEST_CASE( "nya signal", "[nya]" )
 	int j = 5;
 	foo(j); // twice
 	foon();
-	
-	w.reset();
+
+	eventLoop.stop();
 	th.join();
 }
 
-struct TestEventLoopHolder : public nya::event_loop_holder<TestEventLoopHolder>
+struct TestEventLoopHolder : public nya::event_loop_holder<nya::event_loop>
 {
 	static inline int iFoo = 0, iBar = 0;
 	static inline s_p<int> iZoo;
@@ -67,7 +70,7 @@ struct TestEventLoopHolder : public nya::event_loop_holder<TestEventLoopHolder>
 	static void Bar(int y) { iBar = y; }
 	static void Zoo(s_p<int> z) { iZoo = move(z); }
 
-	static void Run() { eventLoop.run(); eventLoop.reset(); }
+	static void Run() { eventLoop.run(); }
 };
 
 TEST_CASE( "nya event_loop_holder", "[nya]" )
@@ -85,9 +88,9 @@ TEST_CASE( "nya event_loop_holder", "[nya]" )
 	CHECK(*TestEventLoopHolder::iZoo == 5);
 
 	// connect
-	nya::sig<void()> SigFoo;
-	nya::sig<void(int)> SigBar;
-	nya::sig<void(s_p<int>)> SigZoo;
+	sig<void()> SigFoo;
+	sig<void(int)> SigBar;
+	sig<void(s_p<int>)> SigZoo;
 	TestEventLoopHolder::connect(SigFoo, TestEventLoopHolder::Foo);
 	TestEventLoopHolder::connect(SigBar, TestEventLoopHolder::Bar);
 	TestEventLoopHolder::connect(SigZoo, TestEventLoopHolder::Zoo);
