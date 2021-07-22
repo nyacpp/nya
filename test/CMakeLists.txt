@@ -1,9 +1,9 @@
 message(STATUS "nya tests enabled")
 
 include(../cmake/nya.cmake)
-include(../cmake/nya_fetch.cmake)
+include(../cmake/fetch_content.cmake)
 
-nya_fetch(https://github.com/catchorg/Catch2.git v2.13.6)
+nya_fetch_content(https://github.com/catchorg/Catch2.git v2.13.6)
 
 set(Boost_USE_STATIC_LIBS ON)
 find_package(Boost 1.65 REQUIRED system)

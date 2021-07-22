@@ -1,30 +1,29 @@
 # NYA Library
-*[nya.hpp](src/nya.hpp) is C++ header only library containing some useful aliases.*
-```c++
-#define umap std::unordered_map
-#define uset std::unordered_set
+C++ header only library with a bunch of tricks.
 
-#define u_p std::unique_ptr
-#define s_p std::shared_ptr
-
-#define all_(x) (x).begin(), (x).end()
-
-typedef unsigned int uint;
-typedef long long llong;
-
-// and some more ...
-```
-
-
-The library is free to use — either fork or just copy the file.
+## Usage
 ```c++
 #include <nya.hpp>
+//
+    uint x;   // unsigned int
+    llong y;  // long long
+	    
+    u_p<MyClass> myObject;    // std::unique_ptr
+    s_p<MyClass> myObject;    // std::shared_ptr
+
+    int sum = std::accumulate(nya_all(v), 0);  // begin, end
 ```
+
+* *see [nya.hpp](src/nya.hpp) for more aliases*
 
 
 -----------------------------------------------------------------
 
-## Additional C++ fun
+## Additional C++ Fun
+```c++
+#include <nya/api.hpp>
+```
+
 * *[enum](src/nya/enum.hpp) with conversion to and from string*
 ```c++
 #define MyEnumDef(K, V)                 \
@@ -86,8 +85,18 @@ auto baz = [](int y) { x2 = y; };  // slot 2
 }
 ```
 
-## Frequently used headers
-Frequently used headers are gathered in [api](src/nya/api.hpp):
-```c++
-#include <nya/api.hpp>
+-----------------------------------------------------------------
+
+## Additional CMake Fun
+
+* [submodule](cmake/submodule.cmake) — automatic submodule update (copy the file, if nya is submodule itself)
+```cmake
+include(nya/cmake/submodule.cmake)
+nya_submodule(deps/my_module)
+```
+
+* [fetch_content](cmake/fetch_content.cmake) — convenient way to call FetchContent
+```cmake
+include(nya/cmake/fetch_content.cmake)
+nya_fetch_content(https://github.com/catchorg/Catch2.git master)
 ```
