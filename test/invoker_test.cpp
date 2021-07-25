@@ -1,7 +1,7 @@
 #include <catch2/catch.hpp>
 #include <thread>
 #include <boost/signals2.hpp>
-#include <nya/signal.hpp>
+#include <nya/invoker.hpp>
 #include <nya/event_loop.hpp>
 #include <nya.hpp>
 
@@ -14,7 +14,7 @@ int x1 = 0, x2 = 0, x3 = 0;
 void bar(int y) { x1 = y; }        // slot 1
 auto baz = [](int y) { x2 = y; };  // slot 2
 
-TEST_CASE( "nya signal", "[nya]" )
+TEST_CASE( "nya invoke and connect", "[nya]" )
 {
 	nya::event_loop eventLoop;
 	thread th([&eventLoop] { eventLoop.start(); });
@@ -61,7 +61,7 @@ TEST_CASE( "nya signal", "[nya]" )
 	th.join();
 }
 
-struct TestEventLoopHolder : public nya::event_loop_holder<nya::event_loop>
+struct TestEventLoopHolder : public nya::static_invoker<TestEventLoopHolder, nya::event_loop>
 {
 	static inline int iFoo = 0, iBar = 0;
 	static inline s_p<int> iZoo;
@@ -73,7 +73,7 @@ struct TestEventLoopHolder : public nya::event_loop_holder<nya::event_loop>
 	static void Run() { eventLoop.run(); }
 };
 
-TEST_CASE( "nya event_loop_holder", "[nya]" )
+TEST_CASE( "nya invoker", "[nya]" )
 {
 	// invoke
 	TestEventLoopHolder::invoke(TestEventLoopHolder::Foo);

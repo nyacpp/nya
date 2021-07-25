@@ -8,7 +8,7 @@
 namespace nya
 {
 template<typename EventLoop, typename Slot, typename ...Args>
-void invoke_in(EventLoop &eventLoop, Slot &&slotFunc, Args... args)
+void invoke_in(EventLoop &eventLoop, Slot &&slotFunc, Args... args)  // for post() which does not accept arguments
 {
 	using namespace std;
 	// move arguments to other thread
@@ -34,7 +34,34 @@ void connect_in(EventLoop &eventLoop, Signal<void(Args...), Ts...> &signalFunc, 
 }
 
 template<typename EventLoop>
-class event_loop_holder
+class invoker
+{
+protected:
+	EventLoop& eventLoop;
+
+public:
+	explicit invoker(EventLoop& eventLoop) : eventLoop(eventLoop) {}
+
+	template<typename Slot, typename ...Args>
+	void invoke(Slot &&slotFunc, Args... args)
+	{
+		using namespace std;
+		if constexpr (sizeof...(Args) == 0)
+			eventLoop.post(forward<Slot>(slotFunc));
+		else
+			invoke_in(eventLoop, forward<Slot>(slotFunc), move(args)...);
+	}
+
+	template<template<typename, typename ...> class Signal, typename Slot, typename ...Args, typename ...Ts>
+	void connect(Signal<void(Args...), Ts...> &signalFunc, Slot &&slotFunc)
+	{
+		using namespace std;
+		nya::connect_in(eventLoop, signalFunc, forward<Slot>(slotFunc));
+	}
+};
+
+template<typename Derived, typename EventLoop>  // Derived here for multiple instances of eventLoop
+class static_invoker
 {
 protected:
 	static EventLoop eventLoop;
@@ -58,7 +85,7 @@ public:
 	}
 };
 
-template<typename EventLoop> EventLoop nya::event_loop_holder<EventLoop>::eventLoop;
+template<typename Derived, typename EventLoop> EventLoop nya::static_invoker<Derived, EventLoop>::eventLoop;
 
 }
 #endif //SIGNALNYA_HPP

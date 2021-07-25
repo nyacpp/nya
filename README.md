@@ -43,6 +43,19 @@ switch (e2)                  // switch
 }
 ```
 
+* *[event_loop](src/nya/event_loop.hpp) — event loop*
+```c++
+void bar(int y) { x1 = y; }
+
+{
+    nya::event_loop eventLoop;
+    eventLoop.post(bar, 1);    // will be called in the following thread
+
+    thread th([&eventLoop] { eventLoop.run(); });
+    th.join();
+}
+```
+
 * *[exception](src/nya/exception.hpp) with file:line*
 ```c++
 nya_throw << "File %s is not found"s % fileName;
@@ -51,6 +64,24 @@ nya_throw << "File %s is not found"s % fileName;
 * *[format](src/nya/format.hpp) — boost::format wrapper*
 ```c++
 cout << "Alpha %s Gamma"s % "Beta"; // "Alpha Beta Gamma"
+```
+
+* *[invoker](src/nya/invoker.hpp) — event loop wrapper*
+```c++
+template<typename F> using sig = boost::signals2::signal<F>;
+sig<void(int)> foo;                // signal
+void bar(int y) { x1 = y; }        // slot 1
+auto baz = [](int y) { x2 = y; };  // slot 2
+
+{
+    nya::event_loop eventLoop;
+    nya::invoke_in(eventLoop, bar, 1);      // async function invocation with parameter
+    nya::connect_in(eventLoop, foo, baz);   // async connect to lambda  
+    foo(2);                                 // slot will be called in the following thread
+
+    thread th([&eventLoop] { eventLoop.run(); });
+    th.join();
+}
 ```
 
 * *[io](src/nya/io.hpp) notes*
@@ -62,27 +93,6 @@ cout << std::variant<int, float>(1); // variant streaming is not in std yet
 * *cozy [log](src/nya/log.hpp)*
 ```c++
 error_log << "Number %d shouldn't be here"s % 5;
-```
-
-* *[signal](src/nya/signal.hpp) — boost signal-slot and event loop wrapper*
-```c++
-nya::sig<void(int)> foo;           // signal
-void bar(int y) { x1 = y; }        // slot 1
-auto baz = [](int y) { x2 = y; };  // slot 2
-
-{
-    nya::event_loop eventLoop;
-    nya::connect_in(eventLoop, foo, bar);      // async connect to function
-    nya::connect_in(eventLoop, foo, baz);      // async connect to lambda
-  
-    auto w = make_u<nya::event_loop::work>(eventLoop);
-    thread th([&eventLoop] { eventLoop.run(); });
-    
-    foo(5); // call slots in "th" thread
-    
-    w.reset();
-    th.join();
-}
 ```
 
 -----------------------------------------------------------------
