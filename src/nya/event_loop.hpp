@@ -1,8 +1,8 @@
 #ifndef NYA_EVENT_QUEUE_TEST_HPP
 #define NYA_EVENT_QUEUE_TEST_HPP
 
-#include <functional>
 #include <atomic>
+#include <functional>
 
 #include "bloque.hpp"
 
@@ -17,35 +17,26 @@ class event_loop
 
 public:
 	/// Post one event for execution.
-	template<typename Event, typename ...Args>
-	void post(Event &&event, Args... args)
+	template<typename Event, typename... Args> void post(Event&& event, Args... args)
 	{
 		using namespace std;
 		if constexpr (sizeof...(Args) == 0)
 			queue.push(event);
 		else
-			queue.push(
-				[e = forward<Event>(event), argsT = make_tuple(move(args)...)]() mutable
-				{
-					// move arguments from lambda to slotFunc
-					apply(move(e), move(argsT));
-				});
+			queue.push([e = forward<Event>(event), argsT = make_tuple(move(args)...)]() mutable {
+				// move arguments from lambda to slotFunc
+				apply(move(e), move(argsT));
+			});
 	}
 
 	/// Block tread and start the event loop.
 	void start()
 	{
-		while (auto functor = queue.take())
-		{
-			functor.value()();
-		}
+		while (auto functor = queue.take()) { functor.value()(); }
 	}
 
 	/// Stop the blocking event loop.
-	void stop()
-	{
-		queue.release();
-	}
+	void stop() { queue.release(); }
 
 	/// Immediately stop the blocking event loop.
 	void abort()
@@ -57,15 +48,12 @@ public:
 	/// Run all events in the loop without blocking.
 	void run()
 	{
-		for (const auto& functor : queue.drain())
-		{
-			functor();
-		}
+		for (const auto& functor : queue.drain()) { functor(); }
 	}
 
 private:
 	bloque<Functor> queue;
 };
-}
+}  // namespace nya
 
-#endif // NYA_EVENT_QUEUE_TEST_HPP
+#endif  // NYA_EVENT_QUEUE_TEST_HPP

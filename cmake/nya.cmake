@@ -1,9 +1,9 @@
 # os specific
-if(APPLE)
-    set(OS_BUNDLE MACOSX_BUNDLE)
-elseif(WIN32)
-    include(${CMAKE_CURRENT_LIST_DIR}/windows.cmake)
-endif()
+if (APPLE)
+	set(OS_BUNDLE MACOSX_BUNDLE)
+elseif (WIN32)
+	include(${CMAKE_CURRENT_LIST_DIR}/windows.cmake)
+endif ()
 
 # general
 add_definitions(-DWIN32_LEAN_AND_MEAN)                  # for boost::asio - reduces windows.h

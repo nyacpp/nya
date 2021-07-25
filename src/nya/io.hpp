@@ -9,18 +9,15 @@
  */
 static void speedup_ios()
 {
-	std::ios::sync_with_stdio(false); // don't use <cstdio>
-	std::cin.tie(0);                  // flush manually before cin
+	std::ios::sync_with_stdio(false);  // don't use <cstdio>
+	std::cin.tie(0);                   // flush manually before cin
 }
 
 #include <string>
 /**
  *  Use operator string() for class output.
  */
-inline std::ostream& operator <<(std::ostream& os, const std::string& s)
-{
-	return std::operator <<(os, s);
-}
+inline std::ostream& operator<<(std::ostream& os, const std::string& s) { return std::operator<<(os, s); }
 
 /**
  * getline() that works with windows/linux line endings (\n, \r\n)
@@ -33,16 +30,16 @@ inline std::istream& nya_getline(std::istream& is, std::string& t)
 }
 
 #ifndef NYA_DISABLE_VARIANT
-#include <variant>
+	#include <variant>
 /**
  *  Print variant into ostream.
  */
-template<typename T, typename... Args> // T - must be at least one argument
-std::ostream& operator<< (std::ostream& os, const std::variant<T, Args...>& var)
+template<typename T, typename... Args>  // T - must be at least one argument
+std::ostream& operator<<(std::ostream& os, const std::variant<T, Args...>& var)
 {
 	std::visit([&os](auto&& arg) { os << arg; }, var);
 	return os;
 }
-#endif //NYA_DISABLE_VARIANT
+#endif  //NYA_DISABLE_VARIANT
 
-#endif //IONYA_HPP
+#endif  //IONYA_HPP

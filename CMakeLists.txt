@@ -5,6 +5,6 @@ add_library(${PROJECT_NAME} INTERFACE)
 target_include_directories(${PROJECT_NAME} INTERFACE src)
 
 # tests
-if(NYA_TESTS)
-    add_subdirectory(test)
-endif()
+if (NYA_TESTS)
+	add_subdirectory(test)
+endif ()

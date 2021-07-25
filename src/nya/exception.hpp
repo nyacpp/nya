@@ -4,6 +4,7 @@
 #include <cstring>
 #include <exception>
 #include <sstream>
+
 #include <nya/format.hpp>
 
 #ifdef _WIN32
@@ -29,18 +30,18 @@ namespace nya
 class exception : public std::exception
 {
 	std::string message;
+
 public:
 	// can be used only in nya_throw — no idea how to do it better
-	nya::exception& operator =(std::ostream& other)
+	nya::exception& operator=(std::ostream& other)
 	{
 		message = std::move(((std::ostringstream&) other).str());
 		return *this;
 	}
-	
+
 	operator std::string() const { return message; }
 	const char* what() const noexcept override { return message.c_str(); }
 };
-}
+}  // namespace nya
 
-#endif //EXCEPTIONNYA_HPP
-
+#endif  //EXCEPTIONNYA_HPP

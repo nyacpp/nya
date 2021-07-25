@@ -1,60 +1,55 @@
-#include <catch2/catch.hpp>
-#include <thread>
 #include <boost/signals2.hpp>
-#include <nya/invoker.hpp>
-#include <nya/event_loop.hpp>
+#include <catch2/catch.hpp>
 #include <nya.hpp>
+#include <nya/event_loop.hpp>
+#include <nya/invoker.hpp>
+#include <thread>
 
 
 using namespace std;
-template<typename F>
-using sig = boost::signals2::signal<F>;
+template<typename F> using sig = boost::signals2::signal<F>;
 
 int x1 = 0, x2 = 0, x3 = 0;
 void bar(int y) { x1 = y; }        // slot 1
 auto baz = [](int y) { x2 = y; };  // slot 2
 
-TEST_CASE( "nya invoke and connect", "[nya]" )
+TEST_CASE("nya invoke and connect", "[nya]")
 {
 	nya::event_loop eventLoop;
 	thread th([&eventLoop] { eventLoop.start(); });
 
-	sig<void(int)> foo; // signal with int argument
+	sig<void(int)> foo;  // signal with int argument
 	sig<void()> foon;    // signal without arguments
 
 	// invoke
-	nya::invoke_in(eventLoop, bar, 3);      // invoke function
+	nya::invoke_in(eventLoop, bar, 3);  // invoke function
 	int i = 3;
 	nya::invoke_in(eventLoop, bar, i);
-	nya::invoke_in(eventLoop, baz, 3);      // invoke lambda
-	nya::invoke_in(eventLoop, [](int y)     // invoke lambda directly
-	{
-		x3 = y;
-	}, 3);
-	nya::invoke_in(eventLoop, []   // check uses invoke without arguments
-	{
+	nya::invoke_in(eventLoop, baz, 3);  // invoke lambda
+	nya::invoke_in(                     // invoke lambda directly
+	        eventLoop, [](int y) { x3 = y; }, 3);
+
+	nya::invoke_in(eventLoop, [] {  // check uses invoke without arguments
 		CHECK(x1 == 3);
 		CHECK(x2 == 3);
-		CHECK(x3 == 3);;
+		CHECK(x3 == 3);
 	});
 
 	// connect
-	nya::connect_in(eventLoop, foo, bar);      // async connect to function
-	nya::connect_in(eventLoop, foo, baz);      // async connect to lambda
-	nya::connect_in(eventLoop, foo, [](int y)  // async connect to lambda directly
-	{
+	nya::connect_in(eventLoop, foo, bar);        // async connect to function
+	nya::connect_in(eventLoop, foo, baz);        // async connect to lambda
+	nya::connect_in(eventLoop, foo, [](int y) {  // async connect to lambda directly
 		x3 = y;
 	});
-	nya::connect_in(eventLoop, foon, []
-	{
+	nya::connect_in(eventLoop, foon, [] {
 		CHECK(x1 == 5);
 		CHECK(x2 == 5);
 		CHECK(x3 == 5);
 	});
 
-	foo(4); // call slots in "th" thread
+	foo(4);  // call slots in "th" thread
 	int j = 5;
-	foo(j); // twice
+	foo(j);  // twice
 	foon();
 
 	eventLoop.stop();
@@ -73,7 +68,7 @@ struct TestEventLoopHolder : public nya::static_invoker<TestEventLoopHolder, nya
 	static void Run() { eventLoop.run(); }
 };
 
-TEST_CASE( "nya invoker", "[nya]" )
+TEST_CASE("nya invoker", "[nya]")
 {
 	// invoke
 	TestEventLoopHolder::invoke(TestEventLoopHolder::Foo);

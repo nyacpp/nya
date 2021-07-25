@@ -1,9 +1,9 @@
 #ifndef NYA_BLOQUE_HPP
 #define NYA_BLOQUE_HPP
 
-#include <mutex>
 #include <condition_variable>
 #include <deque>
+#include <mutex>
 #include <optional>
 
 namespace nya
@@ -11,8 +11,7 @@ namespace nya
 /**
  * Blocking Queue.
  */
-template<typename T, template<typename> class Container = std::deque>
-class bloque
+template<typename T, template<typename> class Container = std::deque> class bloque
 {
 	Container<T> container;
 	bool is_valid = true;
@@ -52,12 +51,12 @@ public:
 		{
 			if (!is_valid)
 			{
-				return std::nullopt; // released before wait
+				return std::nullopt;  // released before wait
 			}
 			when_empty.wait(lock);
 			if (container.empty())
 			{
-				return std::nullopt; // released after wait
+				return std::nullopt;  // released after wait
 			}
 		}
 		T value = container.front();
@@ -89,5 +88,5 @@ public:
 		when_empty.notify_all();
 	}
 };
-}
-#endif //NYA_BLOQUE_HPP
+}  // namespace nya
+#endif  //NYA_BLOQUE_HPP
