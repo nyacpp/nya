@@ -31,7 +31,7 @@ C++ header only library with a bunch of tricks.
     V(Two, 20)                          \
     K(Three)    /* It's the third */    \
     V(Four, 40) /* It's the fourth */
-nya_enum(MyEnum, MyEnumDef)
+nya_enum(MyEnum, MyEnumDef);
 
 MyEnum e1 = MyEnum::One;
 const char* s = e1.c_str();  // to string

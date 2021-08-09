@@ -17,7 +17,7 @@ enum class MyEnum
 	V(Two, 20)                          \
 	K(Three)    / * It's the third * /  \
 	V(Four, 40) / * It's the fourth * /
-nya_enum(MyEnum, MyEnumDef)
+nya_enum(MyEnum, MyEnumDef);
 
 
 // enum to string. If wrong, return "!~MyEnum~"
