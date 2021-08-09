@@ -11,7 +11,10 @@
 #include <string>
 
 // implicit conversion std::string ⇒ boost::format
-template<typename T> boost::format operator%(const std::string& s, T arg) { return boost::format(s) % arg; }
+template<typename T> boost::format operator%(const std::string& s, T arg)
+{
+	return boost::format(s) % arg;
+}
 
 // ""_f instead of ""s, though no templates and no usings:
 //boost::format operator "" _f(const char* s, std::size_t) { return boost::format(s); }

@@ -4,11 +4,20 @@
 
 int a = 0;
 
-void eq_f0() { a = 1; }
+void eq_f0()
+{
+	a = 1;
+}
 
-void eq_f1(int x) { a = x; }
+void eq_f1(int x)
+{
+	a = x;
+}
 
-void eq_f2(int x, int y) { a = x + y; }
+void eq_f2(int x, int y)
+{
+	a = x + y;
+}
 
 TEST_CASE("event loop no thread", "[nya]")
 {

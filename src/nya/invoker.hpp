@@ -37,9 +37,7 @@ protected:
 	EventLoop& eventLoop;
 
 public:
-	explicit invoker(EventLoop& eventLoop)
-	    : eventLoop(eventLoop)
-	{}
+	explicit invoker(EventLoop& eventLoop) : eventLoop(eventLoop) {}
 
 	template<typename Slot, typename... Args> void invoke(Slot&& slotFunc, Args... args)
 	{

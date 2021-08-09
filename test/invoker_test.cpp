@@ -10,7 +10,10 @@ using namespace std;
 template<typename F> using sig = boost::signals2::signal<F>;
 
 int x1 = 0, x2 = 0, x3 = 0;
-void bar(int y) { x1 = y; }        // slot 1
+void bar(int y)
+{
+	x1 = y;
+}  // slot 1
 auto baz = [](int y) { x2 = y; };  // slot 2
 
 TEST_CASE("nya invoke and connect", "[nya]")

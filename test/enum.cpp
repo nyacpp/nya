@@ -2,17 +2,17 @@
 #include <nya/enum.hpp>
 
 
-#define MyEnumDef(K, V)                                                                                                \
-	K(One)                                                                                                             \
-	V(Two, 20)                                                                                                         \
-	K(Three)                                                                                                           \
+#define MyEnumDef(K, V) \
+	K(One)              \
+	V(Two, 20)          \
+	K(Three)            \
 	V(Four, 40)
 nya_enum(MyEnum, MyEnumDef);
 
-#define MyEnumDef2(K, V)                                                                                               \
-	K(One)                                                                                                             \
-	V(Two, 20)                                                                                                         \
-	K(Three)                                                                                                           \
+#define MyEnumDef2(K, V) \
+	K(One)               \
+	V(Two, 20)           \
+	K(Three)             \
 	V(Four, 40)
 nya_enum(MyEnum2, MyEnumDef2);
 
